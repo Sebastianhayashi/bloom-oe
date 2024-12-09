@@ -5,5 +5,4 @@ empy<4
 packaging
 python-dateutil
 PyYAML
-rosdistro>=0.8.0
 vcstools>=0.1.22
