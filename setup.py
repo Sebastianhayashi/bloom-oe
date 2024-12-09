@@ -24,7 +24,7 @@ setup(
         'packaging',
         'python-dateutil',
         'PyYAML',
-        'rosdep >= 0.15.0',
+        'rosdep-oe >= 0.15.0',
         'rosdistro >= 0.8.0',
         'vcstools >= 0.1.22',
     ],
