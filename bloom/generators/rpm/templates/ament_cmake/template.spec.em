@@ -2,8 +2,8 @@
 %bcond_without weak_deps
 
 %global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
-%global __provides_exclude_from ^@(InstallationPrefix)/.*$
-%global __requires_exclude_from ^@(InstallationPrefix)/.*$
+%global __provides_exclude_from ^/opt/ros/jazzy/.*$
+%global __requires_exclude_from ^/opt/ros/jazzy/.*$
 
 Name:           @(Package)
 Version:        @(Version)
@@ -37,7 +37,7 @@ Source0:        %{name}-%{version}.tar.gz
 # In case we're installing to a non-standard location, look for a setup.sh
 # in the install tree and source it.  It will set things like
 # CMAKE_PREFIX_PATH, PKG_CONFIG_PATH, and PYTHONPATH.
-if [ -f "@(InstallationPrefix)/setup.sh" ]; then . "@(InstallationPrefix)/setup.sh"; fi
+if [ -f "/opt/ros/jazzy/setup.sh" ]; then . "/opt/ros/jazzy/setup.sh"; fi
 mkdir -p .obj-%{_target_platform} && cd .obj-%{_target_platform}
 %cmake3 \
     -UINCLUDE_INSTALL_DIR \
@@ -45,9 +45,9 @@ mkdir -p .obj-%{_target_platform} && cd .obj-%{_target_platform}
     -USYSCONF_INSTALL_DIR \
     -USHARE_INSTALL_PREFIX \
     -ULIB_SUFFIX \
-    -DCMAKE_INSTALL_PREFIX="@(InstallationPrefix)" \
-    -DAMENT_PREFIX_PATH="@(InstallationPrefix)" \
-    -DCMAKE_PREFIX_PATH="@(InstallationPrefix)" \
+    -DCMAKE_INSTALL_PREFIX="/opt/ros/jazzy" \
+    -DAMENT_PREFIX_PATH="/opt/ros/jazzy" \
+    -DCMAKE_PREFIX_PATH="/opt/ros/jazzy" \
     -DSETUPTOOLS_DEB_LAYOUT=OFF \
 %if !0%{?with_tests}
     -DBUILD_TESTING=OFF \
@@ -60,7 +60,7 @@ mkdir -p .obj-%{_target_platform} && cd .obj-%{_target_platform}
 # In case we're installing to a non-standard location, look for a setup.sh
 # in the install tree and source it.  It will set things like
 # CMAKE_PREFIX_PATH, PKG_CONFIG_PATH, and PYTHONPATH.
-if [ -f "@(InstallationPrefix)/setup.sh" ]; then . "@(InstallationPrefix)/setup.sh"; fi
+if [ -f "/opt/ros/jazzy/setup.sh" ]; then . "/opt/ros/jazzy/setup.sh"; fi
 %make_install -C .obj-%{_target_platform}
 
 %if 0%{?with_tests}
@@ -74,8 +74,8 @@ fi
 %endif
 
 %files
-@[for lf in LicenseFiles]%license @lf@\n@[end for]@
-@(InstallationPrefix)
+%license /opt/ros/jazzy/LICENSE
+/opt/ros/jazzy/*
 
 %changelog@
 @[for change_version, (change_date, main_name, main_email) in changelogs]

@@ -2,8 +2,8 @@
 %bcond_without weak_deps
 
 %global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
-%global __provides_exclude_from ^@(InstallationPrefix)/.*$
-%global __requires_exclude_from ^@(InstallationPrefix)/.*$
+%global __provides_exclude_from ^/opt/ros/jazzy/.*$
+%global __requires_exclude_from ^/opt/ros/jazzy/.*$
 
 Name:           @(Package)
 Version:        @(Version)
@@ -37,23 +37,23 @@ Source0:        %{name}-%{version}.tar.gz
 # In case we're installing to a non-standard location, look for a setup.sh
 # in the install tree and source it.  It will set things like
 # CMAKE_PREFIX_PATH, PKG_CONFIG_PATH, and PYTHONPATH.
-if [ -f "@(InstallationPrefix)/setup.sh" ]; then . "@(InstallationPrefix)/setup.sh"; fi
+if [ -f "/opt/ros/jazzy/setup.sh" ]; then . "/opt/ros/jazzysetup.sh"; fi
 %py3_build
 
 %install
 # In case we're installing to a non-standard location, look for a setup.sh
 # in the install tree and source it.  It will set things like
 # CMAKE_PREFIX_PATH, PKG_CONFIG_PATH, and PYTHONPATH.
-if [ -f "@(InstallationPrefix)/setup.sh" ]; then . "@(InstallationPrefix)/setup.sh"; fi
-%py3_install -- --prefix "@(InstallationPrefix)"
+if [ -f "/opt/ros/jazzy/setup.sh" ]; then . "/opt/ros/jazzy/setup.sh"; fi
+%py3_install -- --prefix "/opt/ros/jazzy"
 
 %if 0%{?with_tests}
 %check
 # 检查是否存在测试目录或文件
 if [ -d "tests" ] || ls test_*.py *_test.py > /dev/null 2>&1; then
     # 加载安装目录的 setup.sh 文件（如果存在）
-    if [ -f "@(InstallationPrefix)/setup.sh" ]; then
-        . "@(InstallationPrefix)/setup.sh"
+    if [ -f "/opt/ros/jazzy/setup.sh" ]; then
+        . "/opt/ros/jazzy/setup.sh"
     fi
     %__python3 -m pytest tests || echo "RPM TESTS FAILED"
 else
@@ -62,8 +62,8 @@ fi
 %endif
 
 %files
-@[for lf in LicenseFiles]%license @lf@\n@[end for]@
-@(InstallationPrefix)
+%license /opt/ros/jazzy/LICENSE
+/opt/ros/jazzy/*
 
 %changelog@
 @[for change_version, (change_date, main_name, main_email) in changelogs]
