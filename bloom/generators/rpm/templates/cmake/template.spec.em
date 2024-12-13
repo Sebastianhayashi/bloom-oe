@@ -76,7 +76,6 @@ fi
 %endif
 
 %files
-%license /opt/ros/jazzy/LICENSE
 /opt/ros/jazzy/*
 
 %changelog@
