@@ -49,15 +49,16 @@ if [ -f "@(InstallationPrefix)/setup.sh" ]; then . "@(InstallationPrefix)/setup.
 
 %if 0%{?with_tests}
 %check
-# Look for a directory with a name indicating that it contains tests
-TEST_TARGET=$(ls -d * | grep -m1 "\(test\|tests\)" ||:)
-if [ -n "$TEST_TARGET" ] && %__python3 -m pytest --version; then
-# In case we're installing to a non-standard location, look for a setup.sh
-# in the install tree and source it.  It will set things like
-# CMAKE_PREFIX_PATH, PKG_CONFIG_PATH, and PYTHONPATH.
-if [ -f "@(InstallationPrefix)/setup.sh" ]; then . "@(InstallationPrefix)/setup.sh"; fi
-%__python3 -m pytest $TEST_TARGET || echo "RPM TESTS FAILED"
-else echo "RPM TESTS SKIPPED"; fi
+# 检查是否存在测试目录或文件
+if [ -d "tests" ] || ls test_*.py *_test.py > /dev/null 2>&1; then
+    # 加载安装目录的 setup.sh 文件（如果存在）
+    if [ -f "@(InstallationPrefix)/setup.sh" ]; then
+        . "@(InstallationPrefix)/setup.sh"
+    fi
+    %__python3 -m pytest tests || echo "RPM TESTS FAILED"
+else
+    echo "No tests to run, skipping."
+fi
 %endif
 
 %files
