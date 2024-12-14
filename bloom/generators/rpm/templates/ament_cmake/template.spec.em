@@ -35,10 +35,22 @@ Source0:        %{name}-%{version}.tar.gz
 %autosetup -p1
 
 %build
-# In case we're installing to a non-standard location, look for a setup.sh
-# in the install tree and source it.  It will set things like
-# CMAKE_PREFIX_PATH, PKG_CONFIG_PATH, and PYTHONPATH.
-if [ -f "/opt/ros/jazzy/setup.sh" ]; then . "/opt/ros/jazzy/setup.sh"; fi
+# 修复 PYTHONPATH 环境变量
+export PYTHONPATH=/opt/ros/jazzy/lib/python3.11/site-packages:$PYTHONPATH
+
+# 修复 CMAKE_PREFIX_PATH 和 PKG_CONFIG_PATH
+export CMAKE_PREFIX_PATH=/opt/ros/jazzy
+export PKG_CONFIG_PATH=/opt/ros/jazzy/lib/pkgconfig
+
+# 输出环境变量以验证设置
+echo "PYTHONPATH: $PYTHONPATH"
+echo "CMAKE_PREFIX_PATH: $CMAKE_PREFIX_PATH"
+echo "PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
+
+# 验证 ament_package 是否可用
+python3 -c "import ament_package" || { echo "ament_package not found"; exit 1; }
+
+# 创建构建目录并进入
 mkdir -p .obj-%{_target_platform} && cd .obj-%{_target_platform}
 %cmake3 \
     -UINCLUDE_INSTALL_DIR \
