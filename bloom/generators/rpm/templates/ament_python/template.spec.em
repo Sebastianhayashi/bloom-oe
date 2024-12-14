@@ -22,6 +22,7 @@ Source0:        %{name}-%{version}.tar.gz
 @[for p in Provides]Provides:       @p@\n@[end for]@
 @[if TestDepends]@\n%if 0%{?with_tests}
 @[for p in TestDepends]BuildRequires:  @p@\n@[end for]@
+BuildRequires:  ros-jazzy-ament-package
 %endif@\n@[end if]@
 @[if Supplements]@\n%if 0%{?with_weak_deps}
 @[for p in Supplements]Supplements:    @p@\n@[end for]@
