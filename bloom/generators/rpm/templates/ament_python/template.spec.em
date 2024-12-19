@@ -16,6 +16,7 @@ License:        @(License)
 Source0:        %{name}-%{version}.tar.gz
 @[if NoArch]@\nBuildArch:      noarch@\n@[end if]@
 
+BuildRequires:  ros-jazzy-ament-package
 @[for p in Depends]Requires:       @p@\n@[end for]@
 @[for p in sorted(BuildDepends + ['python%{python3_pkgversion}-devel'])]BuildRequires:  @p@\n@[end for]@
 @[for p in Conflicts]Conflicts:      @p@\n@[end for]@
@@ -42,6 +43,7 @@ export PYTHONPATH=/opt/ros/jazzy/lib/python3.11/site-packages:$PYTHONPATH
 # 修复 CMAKE_PREFIX_PATH 和 PKG_CONFIG_PATH
 export CMAKE_PREFIX_PATH=/opt/ros/jazzy
 export PKG_CONFIG_PATH=/opt/ros/jazzy/lib/pkgconfig
+export rcutils_DIR=/opt/ros/jazzy/opt/ros/jazzy/share/rcutils/cmake
 
 # 输出环境变量以验证设置
 echo "PYTHONPATH: $PYTHONPATH"

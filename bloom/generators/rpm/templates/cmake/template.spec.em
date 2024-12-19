@@ -16,6 +16,7 @@ License:        @(License)
 Source0:        %{name}-%{version}.tar.gz
 @[if NoArch]@\nBuildArch:      noarch@\n@[end if]@
 
+BuildRequires:  ros-jazzy-ament-package
 @[for p in Depends]Requires:       @p@\n@[end for]@
 @[for p in BuildDepends]BuildRequires:  @p@\n@[end for]@
 @[for p in Conflicts]Conflicts:      @p@\n@[end for]@
@@ -23,7 +24,6 @@ Source0:        %{name}-%{version}.tar.gz
 @[for p in Provides]Provides:       @p@\n@[end for]@
 @[if TestDepends]@\n%if 0%{?with_tests}
 @[for p in TestDepends]BuildRequires:  @p@\n@[end for]@
-BuildRequires:  ros-jazzy-ament-package
 %endif@\n@[end if]@
 @[if Supplements]@\n%if 0%{?with_weak_deps}
 @[for p in Supplements]Supplements:    @p@\n@[end for]@
@@ -38,6 +38,7 @@ BuildRequires:  ros-jazzy-ament-package
 %build
 # 修复 PYTHONPATH 环境变量
 export PYTHONPATH=/opt/ros/jazzy/lib/python3.11/site-packages:$PYTHONPATH
+export rcutils_DIR=/opt/ros/jazzy/opt/ros/jazzy/share/rcutils/cmake
 
 # 修复 CMAKE_PREFIX_PATH 和 PKG_CONFIG_PATH
 export CMAKE_PREFIX_PATH=/opt/ros/jazzy
